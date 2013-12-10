@@ -14,6 +14,17 @@ NOTHING = 0x00
 SCANON = 0xC0
 lineDataSize = 111
 
+PATTERNS = [
+    [WHITE3, WHITE2, WHITE1, WHITE0],
+    [NOTHING, NOTHING, NOTHING, NOTHING],
+    [BLACK3, BLACK2, BLACK1, BLACK0]    
+]
+
+TESTS = [
+    [0x80, 0x20, 0x08, 0x02],
+    [0x01, 0x04, 0x10, 0x40]
+]
+
 EPDType = enum(
   EPDType_144 = 0,      #1.44" display
   EPDType_200 = 1,      #2.0"  display
@@ -27,17 +38,17 @@ EPD_TYPE_270 = 2
 class COG_LineData:
     def __init__(self, typeIndex):
         if typeIndex == EPD_TYPE_144:
-            self.even = [0x00] * 16
-            self.scan = [0x00] * 24
-            self.odd = [0x00] * 16
+            self.even = [NOTHING] * 16
+            self.scan = [NOTHING] * 24
+            self.odd = [NOTHING] * 16
         elif typeIndex == EPD_TYPE_200:
-            self.even = [0x00] * 25
-            self.scan = [0x00] * 24
-            self.odd = [0x00] * 25
+            self.even = [NOTHING] * 25
+            self.scan = [NOTHING] * 24
+            self.odd = [NOTHING] * 25
         elif typeIndex == EPD_TYPE_270:
-            self.even = [0x00] * 33
-            self.scan = [0x00] * 44
-            self.odd = [0x00] * 33                      
+            self.even = [NOTHING] * 33
+            self.scan = [NOTHING] * 44
+            self.odd = [NOTHING] * 33                      
         
 class COG_Parameters:
     def __init__(self, channelSelect, voltageLevel, horizontal, vertical, 
@@ -167,120 +178,31 @@ def sendData(data):
 
 #-------------------------------------------------------------------------------
 
-def display_Stage_1(previousPicture):
+def displayImg(previousPicture, stage):
     global dataLineOdd, dataLineEven, dataLineScan, currentframe
     dataBuffer = []
     idx = 0
+    pre = PATTERNS[stage-1]
+    post = PATTERNS[(stage+1) % len(PATTERNS)]
     for i in range(COG_Params[EPD_Type_Index].vertical): # for every line
         k = COG_Params[EPD_Type_Index].horizontal - 1
         for j in range (COG_Params[EPD_Type_Index].horizontal): # check every bit in the line
             tempByte = previousPicture[idx]
             idx += 1
-            dataLineOdd[j] = (WHITE3 if (tempByte & 0x80) else BLACK3) | \
-                             (WHITE2 if (tempByte & 0x20) else BLACK2) | \
-                             (WHITE1 if (tempByte & 0x08) else BLACK1) | \
-                             (WHITE0 if (tempByte & 0x02) else BLACK0)
-
-            dataLineEven[k] = (WHITE3 if (tempByte & 0x01) else BLACK3) | \
-                              (WHITE2 if (tempByte & 0x04) else BLACK2) | \
-                              (WHITE1 if (tempByte & 0x10) else BLACK1) | \
-                              (WHITE0 if (tempByte & 0x40) else BLACK0)
+            dataLineOdd[j] = 0
+            dataLineEven[k] = 0
+            for s in range(len(pre)):
+                dataLineOdd[j] |= pre[s] if (tempByte & TESTS[0][s]) else post[s]
+                dataLineEven[k] |= pre[s] if (tempByte & TESTS[1][s]) else post[s]
             k -= 1
 
         dataLineScan[i>>2] = scanTable[i%4]
         data = dataLineEven + dataLineScan + dataLineOdd
-        data += [0] * ( COG_Params[EPD_Type_Index].dataLineSize - len(data))
+        data += [NOTHING] * ( COG_Params[EPD_Type_Index].dataLineSize - len(data))
         dataBuffer.append(str(bytearray(data)))
-        dataLineScan[i>>2] = 0
+        dataLineScan[i>>2] = NOTHING
     return dataBuffer      
-
-#-------------------------------------------------------------------------------
             
-def display_Stage_2(previousPicture):
-    global dataLineOdd, dataLineEven, dataLineScan, currentframe
-    dataBuffer = []
-    idx = 0
-    for i in range(COG_Params[EPD_Type_Index].vertical):
-        k = COG_Params[EPD_Type_Index].horizontal - 1
-        for j in range(COG_Params[EPD_Type_Index].horizontal): #make every bit in the line black
-            tempByte = previousPicture[idx]
-            idx += 1
-            dataLineOdd[j] = (NOTHING if (tempByte & 0x80) else WHITE3) | \
-                             (NOTHING if (tempByte & 0x20) else WHITE2) | \
-                             (NOTHING if (tempByte & 0x08) else WHITE1) | \
-                             (NOTHING if (tempByte & 0x02) else WHITE0)
-            dataLineEven[k] = (NOTHING if (tempByte & 0x01) else WHITE3) | \
-                              (NOTHING if (tempByte & 0x04) else WHITE2) | \
-                              (NOTHING if (tempByte & 0x10) else WHITE1) | \
-                              (NOTHING if (tempByte & 0x40) else WHITE0)
-            k -= 1                  
-
-        dataLineScan[i>>2] = scanTable[i%4]
-        data = dataLineEven + dataLineScan + dataLineOdd
-        data += [0] * ( COG_Params[EPD_Type_Index].dataLineSize - len(data))
-        dataBuffer.append(str(bytearray(data)))
-        dataLineScan[i>>2] = 0
-    return dataBuffer       
-            
-#-------------------------------------------------------------------------------
-
-def display_Stage_3(picture):
-    global dataLineOdd, dataLineEven, dataLineScan, currentframe
-    dataBuffer = []
-    idx = 0
-    for i in range(COG_Params[EPD_Type_Index].vertical): # for every line
-        k = COG_Params[EPD_Type_Index].horizontal - 1
-        for j in range(COG_Params[EPD_Type_Index].horizontal): # check every bit in the line
-            tempByte = picture[idx]
-            idx += 1
-            dataLineOdd[j] = (BLACK3 if (tempByte & 0x80) else NOTHING) | \
-                             (BLACK2 if (tempByte & 0x20) else NOTHING) | \
-                             (BLACK1 if (tempByte & 0x08) else NOTHING) | \
-                             (BLACK0 if (tempByte & 0x02) else NOTHING)
-
-            dataLineEven[k] = (BLACK3 if (tempByte & 0x01) else NOTHING) | \
-                              (BLACK2 if (tempByte & 0x04) else NOTHING) | \
-                              (BLACK1 if (tempByte & 0x10) else NOTHING) | \
-                              (BLACK0 if (tempByte & 0x40) else NOTHING)
-            k -= 1                  
-
-        dataLineScan[i>>2] = scanTable[i%4]
-        data = dataLineEven + dataLineScan + dataLineOdd
-        data += [0] * ( COG_Params[EPD_Type_Index].dataLineSize - len(data))
-        dataBuffer.append(str(bytearray(data)))
-        dataLineScan[i>>2] = 0
-    return dataBuffer
-            
-#------------------------------------------------------------------------------- 
-
-def display_Stage_4(picture):
-    global dataLineOdd, dataLineEven, dataLineScan, currentframe
-    dataBuffer = []
-    idx = 0
-    for i in range(COG_Params[EPD_Type_Index].vertical): # for every line
-        k = COG_Params[EPD_Type_Index].horizontal - 1
-        for j in range(COG_Params[EPD_Type_Index].horizontal):
-            tempByte = picture[idx]
-            idx += 1
-            dataLineOdd[j] = (WHITE3 if (tempByte & 0x80) else BLACK3 ) | \
-                             (WHITE2 if (tempByte & 0x20) else BLACK2 ) | \
-                             (WHITE1 if (tempByte & 0x08) else BLACK1 ) | \
-                             (WHITE0 if (tempByte & 0x02) else BLACK0 )
-
-            dataLineEven[k] = (WHITE3 if (tempByte & 0x01) else BLACK3 ) | \
-                              (WHITE2 if (tempByte & 0x04) else BLACK2 ) | \
-                              (WHITE1 if (tempByte & 0x10) else BLACK1 ) | \
-                              (WHITE0 if (tempByte & 0x40) else BLACK0 )
-
-            k -= 1                  
-
-        dataLineScan[i>>2] = scanTable[i%4]
-        data = dataLineEven + dataLineScan + dataLineOdd
-        data += [0] * ( COG_Params[EPD_Type_Index].dataLineSize - len(data))
-        dataBuffer.append(str(bytearray(data)))
-        dataLineScan[i>>2] = 0
-    return dataBuffer
-
 #------------------------------------------------------------------------------- 
 # Public functions
 #-------------------------------------------------------------------------------
@@ -312,7 +234,7 @@ def powerOn():
 def initializeDriver(EPDIndex):
 
     global EPD_Type_Index, COG_Line
-    sendBuffer = [0] * 2
+    sendBuffer = [NOTHING] * 2
     EPD_Type_Index = EPDIndex
            
     driver_TypeSelect(EPDIndex)
@@ -351,13 +273,13 @@ def initializeDriver(EPDIndex):
     
 def display(newImg, prevImg):
     data = []
-    data.append(display_Stage_1(prevImg))
-    data.append(display_Stage_2(prevImg))
-    data.append(display_Stage_3(newImg))
-    data.append(display_Stage_4(newImg))
-    data.append(display_Stage_1(newImg))
-    data.append(display_Stage_1(newImg))
-    data.append(display_Stage_1(newImg))
+    data.append(displayImg(prevImg, 1))
+    data.append(displayImg(prevImg, 2))
+    data.append(displayImg(newImg, 3))
+    data.append(displayImg(newImg, 1))
+    data.append(displayImg(newImg, 1))
+    data.append(displayImg(newImg, 1))
+    data.append(displayImg(newImg, 1))
     for chunk in data:
         sendData(chunk)
 
