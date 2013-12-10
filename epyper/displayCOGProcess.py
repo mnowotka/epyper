@@ -161,10 +161,8 @@ def sendData(data):
     frameTime = COG_Params[EPD_Type_Index].frameTime
     currentframe = int(COG_Params[EPD_Type_Index].frameTime)
     startClock = epd.getCurrentTimeTick()
-    cnt = 1
     
-    while cnt:
-        cnt -= 1
+    while True:
         for line in data:
             epd.spi_send_byte(0x04, voltageLevel)
             epd.spi_send(0x0a, line)
