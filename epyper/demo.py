@@ -1,7 +1,7 @@
 from epyper.displayController import displayImg
 from epyper.displayCOGProcess import Display
 from epyper import bsp
-from python import PIL
+from PIL import Image
 import epyper
 import os
 
