@@ -137,10 +137,10 @@ class Display():
                 epd.spi_send(0x0a, line)
                 epd.spi_send_byte(0x02, 0x2F)
             currentframe = epd.getCurrentTimeTick() - startClock + frameTime
-            if stageTime > currentframe:
+            if self.stageTime > currentframe:
                 break
 
-        while stageTime > (epd.getCurrentTimeTick() - startClock):
+        while self.stageTime > (epd.getCurrentTimeTick() - startClock):
             continue
 
 #-------------------------------------------------------------------------------
