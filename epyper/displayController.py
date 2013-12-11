@@ -1,14 +1,18 @@
-from epyper import displayCOGProcess as cog
+from epyper.displayCOGProcess import Display
 
 def displayImg(EPDType, newImg, prevImg):
-    # always initialize display (has been powered off before)
-    cog.hwInit()
-    cog.powerOn()
-    cog.initializeDriver(EPDType)
+    display = Display(EPDType)
+    
+    try:
+        # always initialize display (has been powered off before)
+        display.hwInit()
+        display.powerOn()
+        display.initializeDriver()
 
-    # display new picture, but first remove old one
-    cog.display(newImg, prevImg)
-
-    # power down display - picture still displayed
-    cog.powerOff()
+        # display new picture, but first remove old one
+        display.display(newImg, prevImg)
+        
+    finally:    
+        # power down display - picture still displayed
+        display.powerOff()
 

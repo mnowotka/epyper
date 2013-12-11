@@ -1,5 +1,5 @@
 from epyper.displayController import displayImg
-from epyper.displayCOGProcess import EPD_TYPE_270
+from epyper.displayCOGProcess import Display
 from epyper.pdLogo import pdLogo
 from epyper.eaLogo import eaLogo
 from epyper import bsp
@@ -13,13 +13,13 @@ def demo():
     while True:
 
         print "EA Image"
-        displayImg(EPD_TYPE_270, eaLogo, oldImg)
+        displayImg(Display.EPD_TYPE_270, eaLogo, oldImg)
         oldImg = eaLogo
 
         bsp.delayMs(10000)
 
         print "PD Image"
-        displayImg(EPD_TYPE_270, pdLogo, oldImg)
+        displayImg(Display.EPD_TYPE_270, pdLogo, oldImg)
         oldImg = pdLogo
 
         bsp.delayMs(10000)
