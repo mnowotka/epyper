@@ -158,8 +158,8 @@ class Display():
                 self.odd[j] = 0
                 self.even[k] = 0
                 for s in range(len(pre)):
-                    self.odd[j] |= pre[s] if (tempByte & TESTS[0][s]) else post[s]
-                    self.even[k] |= pre[s] if (tempByte & TESTS[1][s]) else post[s]
+                    self.odd[j] |= pre[s] if (tempByte & self.TESTS[0][s]) else post[s]
+                    self.even[k] |= pre[s] if (tempByte & self.TESTS[1][s]) else post[s]
                 k -= 1
 
             self.scan[i>>2] = self.scanTable[i%4]
