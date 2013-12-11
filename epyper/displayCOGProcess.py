@@ -121,7 +121,7 @@ class Display():
             self.stageTime = self.COG_Params.stageTime * 1
         else:
             self.stageTime = (self.COG_Params.stageTime * 7)/10
-        print "stageTime = %s" % stageTime
+        print "stageTime = %s" % self.stageTime
 
 #-------------------------------------------------------------------------------
 
