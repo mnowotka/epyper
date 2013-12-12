@@ -164,8 +164,8 @@ class Display():
 
             self.scan[i>>2] = self.scanTable[i%4]
             data = self.even + self.scan + self.odd
-            data += [self.NOTHING] * (self.COG_Params.dataLineSize - len(data))
-            dataBuffer.append(str(bytearray(data)))
+            data += bytearray(self.COG_Params.dataLineSize - len(data))
+            dataBuffer.append(str(data))
             self.scan[i>>2] = self.NOTHING
         return dataBuffer      
             
