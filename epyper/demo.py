@@ -6,12 +6,9 @@ import epyper
 import os
 import itertools
 
-
 def toBytes(bits):
     return [sum([[0,1][byte[b]>0] << b for b in reversed(range(0,8))])
-            for byte in zip(*
-                [itertools.islice(bits, i, None, 8) for i in reversed(range(0,8))]
-            )
+               for byte in zip(*(iter(bits),) * 8)
         ]
 
 def demo():
@@ -24,7 +21,6 @@ def demo():
 
         print "EA Image"
         eaLogo = Image.open(os.path.join(os.path.dirname(os.path.abspath(epyper.__file__)), "eaLogo.png"))
-#        eaLogo = eaLogo.transpose(Image.FLIP_LEFT_RIGHT)
         eaData = toBytes(list(eaLogo.getdata()))
         displayImg(Display.EPD_TYPE_270, eaData, oldImg)
         oldImg = eaData
@@ -33,7 +29,6 @@ def demo():
 
         print "PD Image"
         pdLogo = Image.open(os.path.join(os.path.dirname(os.path.abspath(epyper.__file__)), "pdLogo.png"))
-#        pdLogo = pdLogo.transpose(Image.FLIP_LEFT_RIGHT)
         pdData = toBytes(list(pdLogo.getdata()))
         displayImg(Display.EPD_TYPE_270, pdData, oldImg)
         oldImg = pdData
