@@ -7,7 +7,7 @@ class DisplayController():
 
 #-------------------------------------------------------------------------------
 
-    def __init__(EPDType)
+    def __init__(EPDType):
         bsp.init()
         self.display = Display(EPDType)
         params = self.display.COG_Params
