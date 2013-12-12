@@ -4,6 +4,15 @@ from epyper import bsp
 from PIL import Image
 import epyper
 import os
+import itertools
+
+
+def toBytes(bits):
+    return [sum([byte[b] << b for b in range(0,8)])
+            for byte in zip(*
+                [itertools.islice(bits, i, None, 8) for i in range(0,8)]
+            )
+        ]
 
 def demo():
     print "Starting E-paper demo"
@@ -16,7 +25,7 @@ def demo():
         print "EA Image"
         eaLogo = Image.open(os.path.join(os.path.dirname(os.path.abspath(epyper.__file__)), "eaLogo.png"))
         eaLogo = eaLogo.transpose(Image.FLIP_LEFT_RIGHT)
-        eaData = list(eaLogo.rotate(180).getdata())
+        eaData = toBytes(list(eaLogo.rotate(180).getdata()))
         displayImg(Display.EPD_TYPE_270, eaData, oldImg)
         oldImg = eaData
 
@@ -25,7 +34,7 @@ def demo():
         print "PD Image"
         pdLogo = Image.open(os.path.join(os.path.dirname(os.path.abspath(epyper.__file__)), "pdLogo.png"))
         pdLogo = pdLogo.transpose(Image.FLIP_LEFT_RIGHT)
-        pdData = list(pdLogo.rotate(180).getdata())
+        pdData = toBytes(list(pdLogo.rotate(180).getdata()))
         displayImg(Display.EPD_TYPE_270, pdData, oldImg)
         oldImg = pdData
 

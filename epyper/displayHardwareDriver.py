@@ -107,14 +107,18 @@ def spi_init():
 #-------------------------------------------------------------------------------
 
 def spi_send(register, data):
+    #cs_high()
+    #bsp.delayUs(10)
     cs_low()
+    
     buf = chr(0x70)
     buf += chr(register)
     bsp.writeToDisplay(buf)
+    
     cs_high()
     bsp.delayUs(10)
-
     cs_low()
+    
     buf = chr(0x72) + buf[1:]
     bsp.writeToDisplay(buf)
     bsp.writeToDisplay(data)
@@ -124,14 +128,17 @@ def spi_send(register, data):
 #-------------------------------------------------------------------------------
 
 def spi_send_byte(register, data):
+    #cs_high()
+    #bsp.delayUs(10)
     cs_low()
     buf = chr(0x70)
     buf += chr(register)
     bsp.writeToDisplay(buf)
+    
     cs_high()
     bsp.delayUs(10)
-
     cs_low()
+    
     buf = chr(0x72)
     buf += chr(data)
     bsp.writeToDisplay(buf)
