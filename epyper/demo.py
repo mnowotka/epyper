@@ -15,13 +15,13 @@ def demo():
     print "Starting E-paper demo"
 
     bsp.init()
-    oldImg = [0] * (176*33)
+    oldImg = bytearray(176*33)
 
     while True:
 
         print "EA Image"
         eaLogo = Image.open(os.path.join(os.path.dirname(os.path.abspath(epyper.__file__)), "eaLogo.png"))
-        eaData = toBytes(list(eaLogo.convert("1").getdata()))
+        eaData = toBytes(bytearray(eaLogo.convert("1").getdata()))
         displayImg(Display.EPD_TYPE_270, eaData, oldImg)
         oldImg = eaData
 
@@ -29,7 +29,7 @@ def demo():
 
         print "PD Image"
         pdLogo = Image.open(os.path.join(os.path.dirname(os.path.abspath(epyper.__file__)), "pdLogo.png"))
-        pdData = toBytes(list(pdLogo.convert("1").getdata()))
+        pdData = toBytes(bytearray(pdLogo.convert("1").getdata()))
         displayImg(Display.EPD_TYPE_270, pdData, oldImg)
         oldImg = pdData
 

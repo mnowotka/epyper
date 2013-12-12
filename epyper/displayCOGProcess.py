@@ -29,21 +29,21 @@ class Display():
     NOTHING = 0x00
 
     PATTERNS = [
-        [WHITE3, WHITE2, WHITE1, WHITE0],
-        [NOTHING, NOTHING, NOTHING, NOTHING],
-        [BLACK3, BLACK2, BLACK1, BLACK0]    
+        bytearray([WHITE3, WHITE2, WHITE1, WHITE0]),
+        bytearray([NOTHING, NOTHING, NOTHING, NOTHING]),
+        bytearray([BLACK3, BLACK2, BLACK1, BLACK0])    
     ]
 
     TESTS = [
-        [0x80, 0x20, 0x08, 0x02],
-        [0x01, 0x04, 0x10, 0x40]
+        bytearray([0x80, 0x20, 0x08, 0x02]),
+        bytearray([0x01, 0x04, 0x10, 0x40])
     ]
 
     EPD_TYPE_144 = 0
     EPD_TYPE_200 = 1
     EPD_TYPE_270 = 2
     
-    scanTable = [0xC0, 0x30, 0x0C, 0x03]
+    scanTable = bytearray([0xC0, 0x30, 0x0C, 0x03])
 
 #-------------------------------------------------------------------------------
 
@@ -52,9 +52,9 @@ class Display():
         self.EPD_Type_Index = typeIndex
     
         if typeIndex == self.EPD_TYPE_144:
-            self.even = [self.NOTHING] * 16
-            self.scan = [self.NOTHING] * 24
-            self.odd = [self.NOTHING] * 16
+            self.even = bytearray(16)
+            self.scan = bytearray(24)
+            self.odd = bytearray(16)
             
             self.COG_Params = COG_Parameters( #for 1.44"
                     [0x00,0x00,0x00,0x00,0x00,0x0f,0xff,0x00],
@@ -67,9 +67,9 @@ class Display():
                 )
             
         elif typeIndex == self.EPD_TYPE_200:
-            self.even = [self.NOTHING] * 25
-            self.scan = [self.NOTHING] * 24
-            self.odd = [self.NOTHING] * 25
+            self.even = bytearray(25)
+            self.scan = bytearray(24)
+            self.odd = bytearray(25)
             
             self.COG_Params = COG_Parameters( #for 2.0"
                     [0x00,0x00,0x00,0x00,0x01,0xFF,0xE0,0x00],
@@ -82,9 +82,9 @@ class Display():
                 )            
             
         elif typeIndex == self.EPD_TYPE_270:
-            self.even = [self.NOTHING] * 33
-            self.scan = [self.NOTHING] * 44
-            self.odd = [self.NOTHING] * 33                      
+            self.even = bytearray(33)
+            self.scan = bytearray(44)
+            self.odd = bytearray(33)                      
         
             self.COG_Params = COG_Parameters( #for 2.7"
                     [0x00,0x00,0x00,0x7F,0xFF,0xFE,0x00,0x00],
@@ -198,7 +198,7 @@ class Display():
 #-------------------------------------------------------------------------------
 
     def initializeDriver(self):
-        sendBuffer = [self.NOTHING] * 2
+        sendBuffer = bytearray(2)
         self.setTemperature_Factor()
 
         epd.spi_send(0x01, str(bytearray(self.COG_Params.channelSelect)))
