@@ -8,9 +8,9 @@ import itertools
 
 
 def toBytes(bits):
-    return [sum([[0,1][byte[b]>0] << b for b in range(0,8)])
+    return [sum([[0,1][byte[b]>0] << b for b in reversed(range(0,8))])
             for byte in zip(*
-                [itertools.islice(bits, i, None, 8) for i in range(0,8)]
+                [itertools.islice(bits, i, None, 8) for i in reversed(range(0,8))]
             )
         ]
 
