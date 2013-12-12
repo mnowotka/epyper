@@ -14,7 +14,7 @@ class DisplayController():
         size = params.horizontal * params.vertical
         self.prevImg = bytearray(size)
         self.newImg = bytearray(size)
-        self.size = (params.horizontal, params.vertical)
+        self.size = (params.vertical, params.horizontal)
 
 #-------------------------------------------------------------------------------
         
@@ -27,7 +27,8 @@ class DisplayController():
 
     def displayImg(self, img):
         if img.size != self.size:
-            print "image has a wrong size, should be %s" % str(self.size)
+            print "image has a wrong size, should be %s, is %s" % 
+                                                    (str(self.size), img.size)
             return
             
         self.newImg = self.toBytes(bytearray(img.convert("1").getdata()))
