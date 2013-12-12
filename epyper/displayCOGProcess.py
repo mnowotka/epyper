@@ -57,7 +57,7 @@ class Display():
             self.odd = bytearray(16)
             
             self.COG_Params = COG_Parameters( #for 1.44"
-                    [0x00,0x00,0x00,0x00,0x00,0x0f,0xff,0x00],
+                    bytearray([0x00,0x00,0x00,0x00,0x00,0x0f,0xff,0x00]),
                     0x03,
                     128/8,
                     96,
@@ -72,7 +72,7 @@ class Display():
             self.odd = bytearray(25)
             
             self.COG_Params = COG_Parameters( #for 2.0"
-                    [0x00,0x00,0x00,0x00,0x01,0xFF,0xE0,0x00],
+                    bytearray([0x00,0x00,0x00,0x00,0x01,0xFF,0xE0,0x00]),
                     0x03,
                     200/8,
                     96,
@@ -87,7 +87,7 @@ class Display():
             self.odd = bytearray(33)                      
         
             self.COG_Params = COG_Parameters( #for 2.7"
-                    [0x00,0x00,0x00,0x7F,0xFF,0xFE,0x00,0x00],
+                    bytearray([0x00,0x00,0x00,0x7F,0xFF,0xFE,0x00,0x00]),
                     0x00,
                     264/8,
                     176,
@@ -201,7 +201,7 @@ class Display():
         sendBuffer = bytearray(2)
         self.setTemperature_Factor()
 
-        epd.spi_send(0x01, str(bytearray(self.COG_Params.channelSelect)))
+        epd.spi_send(0x01, str(self.COG_Params.channelSelect))
 
         epd.spi_send_byte(0x06, 0xff)
         epd.spi_send_byte(0x07, 0x9d)
@@ -210,7 +210,7 @@ class Display():
         sendBuffer[0] = 0xd0
         sendBuffer[1] = 0x00
         
-        epd.spi_send(0x09, str(bytearray(sendBuffer)))
+        epd.spi_send(0x09, str(sendBuffer))
         epd.spi_send_byte(0x04, self.COG_Params.voltageLevel)
         epd.spi_send_byte(0x03, 0x01)
         epd.spi_send_byte(0x03, 0x00)
