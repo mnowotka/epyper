@@ -25,7 +25,7 @@ class DisplayController():
 
 #-------------------------------------------------------------------------------
 
-    def displayImg(img):
+    def displayImg(self, img):
         if img.size != self.size:
             print "image has a wrong size, should be %s" % str(self.size)
             return
