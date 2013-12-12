@@ -14,7 +14,7 @@ class DisplayController():
         size = params.horizontal * params.vertical
         self.prevImg = bytearray(size)
         self.newImg = bytearray(size)
-        self.size = (params.vertical, params.horizontal)
+        self.size = (params.horizontal * 8, params.vertical)
 
 #-------------------------------------------------------------------------------
         
