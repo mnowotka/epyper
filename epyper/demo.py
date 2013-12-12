@@ -8,7 +8,7 @@ import itertools
 
 def toBytes(bits):
     return [sum([[0,1][byte[b]>0] << (7-b) for b in range(0,8)])
-               for byte in reversed(zip(*(iter(bits),) * 8))
+               for byte in zip(*(iter(bits),) * 8)
         ]
 
 def demo():
