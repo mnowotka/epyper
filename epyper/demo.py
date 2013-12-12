@@ -24,8 +24,8 @@ def demo():
 
         print "EA Image"
         eaLogo = Image.open(os.path.join(os.path.dirname(os.path.abspath(epyper.__file__)), "eaLogo.png"))
-        eaLogo = eaLogo.transpose(Image.FLIP_LEFT_RIGHT)
-        eaData = toBytes(list(eaLogo.rotate(180).getdata()))
+#        eaLogo = eaLogo.transpose(Image.FLIP_LEFT_RIGHT)
+        eaData = toBytes(list(eaLogo.getdata()))
         displayImg(Display.EPD_TYPE_270, eaData, oldImg)
         oldImg = eaData
 
@@ -33,8 +33,8 @@ def demo():
 
         print "PD Image"
         pdLogo = Image.open(os.path.join(os.path.dirname(os.path.abspath(epyper.__file__)), "pdLogo.png"))
-        pdLogo = pdLogo.transpose(Image.FLIP_LEFT_RIGHT)
-        pdData = toBytes(list(pdLogo.rotate(180).getdata()))
+#        pdLogo = pdLogo.transpose(Image.FLIP_LEFT_RIGHT)
+        pdData = toBytes(list(pdLogo.getdata()))
         displayImg(Display.EPD_TYPE_270, pdData, oldImg)
         oldImg = pdData
 
