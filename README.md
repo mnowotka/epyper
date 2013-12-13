@@ -17,5 +17,5 @@ How to us it?
 
 Dependencies
 --------
- * `WiringPi2-Python <https://github.com/WiringPi/WiringPi2-Python>`_
- * `Pillow <https://github.com/python-imaging/Pillow>`_
+ * [WiringPi2-Python] (https://github.com/WiringPi/WiringPi2-Python)
+ * [Pillow] (https://github.com/python-imaging/Pillow)
