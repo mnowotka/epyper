@@ -1,6 +1,5 @@
 import wiringpi2
 from epyper.enum import enum
-from epyper.timeout import timelimited, TimeLimitExpired
 
 pins = enum(
     PIN_6 = 0,
@@ -124,12 +123,8 @@ def writeToDisplay(data):
         print "bsp_writeToDisplay: ERROR len=%d > %d" % (length, DISPLAY_BUF_SZ)
         return
 
-    while True:
-        try:
-            timelimited(1, wiringpi2.wiringPiSPIDataRW, 0, data)
-            break
-        except TimeLimitExpired:
-            pass    
+    #TODO: can hang here...
+    wiringpi2.wiringPiSPIDataRW(0, data)
 
 #-------------------------------------------------------------------------------
 
