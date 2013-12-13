@@ -1,6 +1,6 @@
 import wiringpi2
 from epyper.enum import enum
-from epyper.timeout import timeout, TimeoutError
+from epyper.timeout import timelimited, TimeLimitExpired
 
 pins = enum(
     PIN_6 = 0,
@@ -126,9 +126,9 @@ def writeToDisplay(data):
 
     while True:
         try:
-            timeout()(wiringpi2.wiringPiSPIDataRW)(0, data)
+            timelimited(1, wiringpi2.wiringPiSPIDataRW, 0, data)
             break
-        except TimeoutError:
+        except TimeLimitExpired:
             pass    
 
 #-------------------------------------------------------------------------------
