@@ -12,9 +12,23 @@ http://www.embeddedartists.com/sites/default/files/support/displays/epaper/epape
 Rationale
 --------
 
-How to us it?
+How to use it?
 --------
 
+    #necessary imports first
+    from PIL import Image
+    from epyper.displayCOGProcess import Display
+    from epyper.displayController import DisplayController
+    
+    #create DisplayController instance specifying display type as an argument
+    display = DisplayController(Display.EPD_TYPE_270)
+    
+    #open some image
+    im = Image.open("some_image.png")
+    
+    #display it!
+    display.displayImg(im)
+    
 Dependencies
 --------
  * [WiringPi2-Python] (https://github.com/WiringPi/WiringPi2-Python)
