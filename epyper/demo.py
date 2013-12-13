@@ -15,7 +15,7 @@ def demo():
 
         print "EA Image"
         eaLogo = Image.open(os.path.join(os.path.dirname(
-            os.path.abspath(epyper.__file__)), ".." , "samples", "eaLogo.png"))
+            os.path.abspath(epyper.__file__)), "samples", "eaLogo.png"))
                             
         display.displayImg(eaLogo)
 
@@ -23,7 +23,7 @@ def demo():
 
         print "PD Image"
         pdLogo = Image.open(os.path.join(os.path.dirname(
-            os.path.abspath(epyper.__file__)), "..", "samples", "pdLogo.png"))
+            os.path.abspath(epyper.__file__)), "samples", "pdLogo.png"))
                             
         display.displayImg(pdLogo)
 
