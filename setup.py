@@ -24,6 +24,9 @@ setup(
     long_description=open('README.md').read(),
     install_requires=['wiringpi2>=1.0.10',
                       'Pillow>=2.2.1'],
+    package_data={
+        'epyper': ['samples/*'],
+        },                  
     include_package_data=False,
     classifiers=['Development Status :: 4 - Beta',
                  "Environment :: Handhelds/PDA's",
