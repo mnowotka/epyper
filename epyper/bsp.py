@@ -1,5 +1,6 @@
 import wiringpi2
 from epyper.enum import enum
+from epyper.timeout import timeout, TimeoutError
 
 pins = enum(
     PIN_6 = 0,
@@ -123,7 +124,12 @@ def writeToDisplay(data):
         print "bsp_writeToDisplay: ERROR len=%d > %d" % (length, DISPLAY_BUF_SZ)
         return
 
-    wiringpi2.wiringPiSPIDataRW(0, data)
+    while True:
+        try:
+            timeout()(wiringpi2.wiringPiSPIDataRW)(0, data)
+            break
+        except TimeoutError:
+            pass    
 
 #-------------------------------------------------------------------------------
 
