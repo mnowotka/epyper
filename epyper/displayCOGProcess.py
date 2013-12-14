@@ -95,6 +95,9 @@ class Display():
                     105,
                     630
                 )
+
+        self.aux_buffer = bytearray(len(self.even) + len(self.scan) + \
+                                                                 len(self.odd))
         
 #-------------------------------------------------------------------------------
 # Local functions
@@ -103,8 +106,6 @@ class Display():
     def setTemperature_Factor(self):
         temperature = epd.get_temperature()
 
-        print "temperature = %s" % temperature
-
         if temperature < -10:
             self.stageTime = self.COG_Params.stageTime * 17
         elif temperature < -5:
@@ -112,36 +113,41 @@ class Display():
         elif temperature < 5:
             self.stageTime = self.COG_Params.stageTime * 8
         elif temperature < 10:
-            self.stageTime = self.COG_Params.stageTime * 4
+            self.stageTime = self.COG_Params.stageTime * 6
         elif temperature < 15:
-            self.stageTime = self.COG_Params.stageTime * 3
+            self.stageTime = self.COG_Params.stageTime * 5
         elif temperature < 20:
-            self.stageTime = self.COG_Params.stageTime * 2
+            self.stageTime = self.COG_Params.stageTime * 4
         elif temperature < 40:
-            self.stageTime = self.COG_Params.stageTime * 1
+            self.stageTime = self.COG_Params.stageTime * 3
         else:
             self.stageTime = (self.COG_Params.stageTime * 7)/10
-        print "stageTime = %s" % self.stageTime
 
 #-------------------------------------------------------------------------------
 
-    def sendData(self, data):
+    def sendData(self, stage, data):
         voltageLevel = self.COG_Params.voltageLevel
-        frameTime = self.COG_Params.frameTime
-        currentframe = int(self.COG_Params.frameTime)
+        ft = self.COG_Params.frameTime
+        currentTime = 0
+        frameTime = 0 
+        frameCounter = 0
         startClock = epd.getCurrentTimeTick()
         
         while True:
+            frameCounter += 1
             for line in data:
+                self.aux_buffer[:] = line[:]
                 epd.spi_send_byte(0x04, voltageLevel)
-                epd.spi_send(0x0a, line)
+                epd.spi_send(0x0a, str(self.aux_buffer))
                 epd.spi_send_byte(0x02, 0x2F)
-            currentframe = epd.getCurrentTimeTick() - startClock + frameTime
-            if self.stageTime > currentframe:
+            while True:
+                currentTime = epd.getCurrentTimeTick() - startClock
+                frameTime = currentTime - frameTime
+                if frameTime > ft:
+                    break
+            
+            if stage != 3 or currentTime > self.stageTime:
                 break
-
-        while self.stageTime > (epd.getCurrentTimeTick() - startClock):
-            continue
 
 #-------------------------------------------------------------------------------
 
@@ -227,15 +233,10 @@ class Display():
     
     def display(self, newImg, prevImg):
         data = []
-        data.append(self.displayImg(prevImg, 1))
-        data.append(self.displayImg(prevImg, 2))
-        data.append(self.displayImg(newImg, 3))
-        data.append(self.displayImg(newImg, 1))
-        data.append(self.displayImg(newImg, 1))
-        data.append(self.displayImg(newImg, 1))
-        data.append(self.displayImg(newImg, 1))
-        for chunk in data:
-            self.sendData(chunk)
+        for i in range(4):
+            data.append(self.displayImg(prevImg if i < 2 else newImg, i%3+1))
+        for stage, chunk in enumerate(data):
+            self.sendData(stage, chunk)
 
 #-------------------------------------------------------------------------------
 
