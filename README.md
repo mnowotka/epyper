@@ -1,6 +1,8 @@
 epyper
 ======
 
+![demo](https://raw.github.com/mnowotka/epyper/master/doc/demo.jpg)
+
 Python driver for Embedded Artists 2.7 inch E-paper Display Module:
 
 http://www.embeddedartists.com/products/displays/lcd_27_epaper.php. 
