@@ -20,7 +20,7 @@ So you got your new shiny E-paper display from Embeded Artists. You plug it to y
 
 `Epyper` provides high level python interface for displaying images on e-paper. The most important class is `DisplayController`, which provides `displayImg` method accepting PIL `Image` to be displayed. The image needs to have proper size. It doesn't necessary needs to be black and white only - color images will be converted but the effect may be dissapointing so it's better to provide b&w or convert it before handing it to the `DisplayController`. 
 
-How to use it?
+Installation
 --------
 
 The best way to install epyper is to use `PIP`:
