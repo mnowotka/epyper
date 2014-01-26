@@ -30,6 +30,10 @@ The best way to install epyper is to use `PIP`:
 This command will install latest stable version with all dependencies.
 You can of course clone development version from github but it's not guaranteed to be working.
 
+Another option is use `PIP` to install latestest version from github, like this:
+
+    sudo pip install git+https://github.com/mnowotka/epyper.git
+
 How to use it?
 --------
 
