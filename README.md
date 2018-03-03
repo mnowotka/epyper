@@ -11,8 +11,8 @@ It's based on original C code available here:
 
 http://www.embeddedartists.com/sites/default/files/support/displays/epaper/epaper_pi_130307.tar.gz
 
-[![Downloads](https://pypip.in/v/epyper/badge.png)](https://pypi.python.org/pypi/epyper)
-[![Number of PyPI downloads](https://pypip.in/d/epyper/badge.png)](https://crate.io/packages/epyper/)
+[![Downloads](https://img.shields.io/pypi/v/epyper.svg
+[![Number of PyPI downloads](https://img.shields.io/pypi/dm/epyper.svg
 
 Rationale
 --------
