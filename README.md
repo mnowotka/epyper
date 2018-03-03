@@ -11,8 +11,8 @@ It's based on original C code available here:
 
 http://www.embeddedartists.com/sites/default/files/support/displays/epaper/epaper_pi_130307.tar.gz
 
-[![Downloads](https://img.shields.io/pypi/v/epyper.svg
-[![Number of PyPI downloads](https://img.shields.io/pypi/dm/epyper.svg
+[![Downloads](https://img.shields.io/pypi/v/epyper.svg)](https://pypi.python.org/pypi/epyper)
+[![Number of PyPI downloads](https://img.shields.io/pypi/dm/epyper.svg)](https://crate.io/packages/epyper/)
 
 Rationale
 --------
@@ -54,5 +54,5 @@ How to use it?
     
 Dependencies
 --------
- * [WiringPi2-Python] (https://github.com/WiringPi/WiringPi2-Python)
- * [Pillow] (https://github.com/python-imaging/Pillow)
+ * [WiringPi2-Python](https://github.com/WiringPi/WiringPi2-Python)
+ * [Pillow](https://github.com/python-imaging/Pillow)
